@@ -1,0 +1,86 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Sign Language Transaltor</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+        <style>
+            body{
+                font-family: tahoma;
+                background-image: linear-gradient(135deg, #631968, #af1c50, #dd1e3f);
+            }
+            header{
+                background-size: cover;
+                height: 100vh;
+                position: relative;
+                overflow: hidden;
+            }
+            .header-content{
+                z-index: 1;
+                position: relative;
+            }
+            .header-content h1{
+                font-size: 45px;
+                font-weight: bold;
+                text-transform: capitalize;
+                color: aliceblue;
+            }
+            #bg{
+                width: 100%;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body >
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div style="margin-top: 230px;"></div>
+                            <h1>Translate your sign langauge</h1>
+                        </div>
+                        <div class="col-lg-6">
+                            <div style="margin-top: 130px;"></div>
+                            <img id="bg" src="{{ url_for('video_feed') }}" class="img-responsive">
+                        </div>
+                        <img src="{{ user_image }}">
+                    </div>
+                </div>
+            </div>
+        </header>
+    </body>
+</html>
+
+<!-- <html>
+    <head>
+        <style>
+            body {
+                margin: auto;
+                width: 640px; 
+                padding: 50px;
+                font-family: 'Avenir', sans-serif; 
+                color: #33475b;
+                background-color: blueviolet;
+            }
+            div {
+                display: flex;
+                justify-content: center;
+            }
+            h1   {color: blue;}
+            p    {color: red;}
+            img{
+                width: 100%;
+            }
+            </style>
+        <title>Sign Language Transaltor</title>
+    </head>
+    <body>
+        <h1>
+            Sign Language Transaltor
+        </h1>
+        <div>
+            <img id="bg" src="{{ url_for('video_feed') }}">
+        </div>
+        <img src="{{ user_image }}">
+    </body>
+</html> -->
