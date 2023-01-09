@@ -3,6 +3,7 @@ from hands import HandDetector
 from PIL import Image
 import tensorflow as tf
 import numpy as np
+import time
 import math
 import os
 from tensorflow.keras.models import load_model
@@ -29,6 +30,7 @@ dic = list(train_dataset.class_indices)
 
 offset = 10
 imgSize = 350
+frame_rate = 5
 counter = 0
 result = 0
 detector = HandDetector(maxHands=1)
@@ -46,7 +48,7 @@ class VideoCamera(object):
         ret, jpeg = cv2.imencode('.jpg',img)
         return jpeg.tobytes()
 
-    def get_frame(self):
+    def get_frame(self, time_elapsed):
         ret, img = self.video.read()
         imgOutput = img.copy()
 
@@ -84,6 +86,21 @@ class VideoCamera(object):
             imgWhite = img_to_array(imgWhite)
             imgWhite = imgWhite.reshape((1, imgWhite.shape[0], imgWhite.shape[1], imgWhite.shape[2]))
             imgWhite = preprocess_input(imgWhite)
+            if time_elapsed > 1./frame_rate:
+                prev = time.time()
+                result = model.predict(imgWhite)
+                word = dic[result.argmax()]
+                oldWord = word
+                result = result * 100000000
+                maxVal = (result[0].max()/sum(result[0])) * 100
+                if(maxVal > 99.9999999):
+                    cv2.putText(imgOutput, dic[result.argmax()],(x,y-20), cv2.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
+                    cv2.imshow(f"ImageCrop", imgCrop)
+                else:
+                    cv2.putText(imgOutput, "",(x,y-20), cv2.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
+                    cv2.imshow(f"ImageCrop", imgCrop)
+            else:
+                cv2.putText(imgOutput, word,(x,y-20), cv2.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
 
             result = model.predict(imgWhite)
 

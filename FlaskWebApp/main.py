@@ -1,17 +1,27 @@
 from flask import Flask, render_template, Response
 from camera import VideoCamera
 from hands import HandDetector
+import time
+import os
+import jyserver.Flask as jsf
 
 app = Flask(__name__)
+picFolder = os.path.join('static', 'pics')
+prev = 0
+
+app.config['UPLOAD_FOLDER'] = picFolder
+
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    pic1 = os.path.join(app.config['UPLOAD_FOLDER'], 'wave-bottom.svg')
+    return render_template('index.html', user_image=pic1)
 
 def gen(camera):
     while True:
+        time_elapsed = time.time() - prev
         try:
-            frame = camera.get_frame()
+            frame = camera.get_frame(time_elapsed)
             yield (b'--frame\r\n'
                 b'Content-Type:image/jpeg\r\n\r\n' + frame 
                 + b'\r\n\r\n')
@@ -28,4 +38,3 @@ def video_feed():
 
 if __name__== '__main__':
     app.run(host='0.0.0.0', port='5000', debug=True)
-    
