@@ -95,10 +95,10 @@ class VideoCamera(object):
                 maxVal = (result[0].max()/sum(result[0])) * 100
                 if(maxVal > 99.9999999):
                     cv2.putText(imgOutput, dic[result.argmax()],(x,y-20), cv2.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
-                    cv2.imshow(f"ImageCrop", imgCrop)
+                    # cv2.imshow(f"ImageCrop", imgCrop)
                 else:
                     cv2.putText(imgOutput, "",(x,y-20), cv2.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
-                    cv2.imshow(f"ImageCrop", imgCrop)
+                    # cv2.imshow(f"ImageCrop", imgCrop)
             else:
                 cv2.putText(imgOutput, word,(x,y-20), cv2.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
 
@@ -109,8 +109,8 @@ class VideoCamera(object):
             
 
             cv2.putText(imgOutput, dic[result.argmax()],(x,y-20), cv2.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)           
-            cv2.imshow(f"ImageCrop", imgCrop)
-            cv2.imshow(f"imgWhite", imgWhiteCopy)
+            # cv2.imshow(f"ImageCrop", imgCrop)
+            # cv2.imshow(f"imgWhite", imgWhiteCopy)
 
 
         ret, jpeg = cv2.imencode('.jpg',imgOutput)
