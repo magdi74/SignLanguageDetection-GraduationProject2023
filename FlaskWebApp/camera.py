@@ -13,19 +13,21 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator , img_to_array, load_img
 from tensorflow.keras.optimizers import RMSprop
 
-train = ImageDataGenerator(rescale = 1./255
-)
-validation = ImageDataGenerator(rescale = 1./255)
-train_dataset = train.flow_from_directory('./data/trainSet',
-                                         target_size = (350,350),
-                                         batch_size = 32,
-                                         class_mode = "categorical")
-validation_dataset = validation.flow_from_directory('./data/validSet',
-                                                   target_size = (350,350),
-                                                   batch_size = 32,
-                                                   class_mode = "categorical")
-train_dataset.class_indices
-dic = list(train_dataset.class_indices)
+dic = ['drink',
+ 'food',
+ 'full',
+ 'have',
+ 'hello',
+ 'i',
+ 'i love you',
+ 'police',
+ 'prefer',
+ 'shirt',
+ 'telephone',
+ 'water',
+ 'wrong',
+ 'yes',
+ 'you']
 
 
 offset = 10

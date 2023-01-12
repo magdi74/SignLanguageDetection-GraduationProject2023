@@ -1,9 +1,7 @@
 from flask import Flask, render_template, Response
 from camera import VideoCamera
-from hands import HandDetector
 import time
 import os
-import jyserver.Flask as jsf
 
 app = Flask(__name__)
 picFolder = os.path.join('static', 'pics')
