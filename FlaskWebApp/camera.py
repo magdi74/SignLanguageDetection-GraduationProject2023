@@ -36,7 +36,7 @@ frame_rate = 5
 counter = 0
 result = 0
 detector = HandDetector(maxHands=1)
-model = load_model("./models/VGG16_Augmented1.h5")
+model = load_model("../model/VGG16_Augmented1.h5")
 
 class VideoCamera(object):
     def __init__(self):
