@@ -8,11 +8,8 @@ width=640
 height=480
 Known_distance = 70.0
 Known_width = 15.0
-a=[]
-# def Focal_Length_Finder(Known_distance, real_width, width_in_rf_image):
-
-#     focal_length = (width_in_rf_image * Known_distance) / real_width
-#     return focal_length
+counter = 0
+window_open = False
 
 def obj_data(img):
     obj_width=0
@@ -25,42 +22,53 @@ def obj_data(img):
            bbox = detection.location_data.relative_bounding_box
            x, y, w, h = int(bbox.xmin*width), int(bbox.ymin * height), int(bbox.width*width),int(bbox.height*height)
         #    cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
-           a.append([x,y])
+
            obj_width=w
        return obj_width
     
 def Distance_finder(Focal_Length, Known_width, obj_width_in_frame):
     distance = (Known_width * Focal_Length)/obj_width_in_frame
-    return distance
-    
-# ref_image = cv2.imread("rf.png")
-# ref_image_obj_width = obj_data(ref_image)
-# Focal_length_found = Focal_Length_Finder(Known_distance, Known_width, ref_image_obj_width)
-# cv2.imshow("ref_image", ref_image)
-
-# print(Focal_length_found)
+    return distance   
 
 while True:
     ret,frame=cap.read()
     frame=cv2.resize(frame,(640,480))
+
     obj_width_in_frame=obj_data(frame)
     if not obj_width_in_frame:
         print("NO FACE")
     else:
         Distance = Distance_finder(600, Known_width, obj_width_in_frame)
-        for i in a:
-            x1=i[0]
-            y1=i[1]
-        if int(Distance) <= 90 and int(Distance) >= 50:
-            cv2.putText(frame, f"In Range: {int(Distance)} CM", (5, 25),cv2.FONT_HERSHEY_PLAIN, 2, (255,0,0), 2)
-        else:
-            cv2.putText(frame, f"Out of Range:{int(Distance)} CM", (5, 25),cv2.FONT_HERSHEY_PLAIN, 2, (255,0,0), 2)
 
-    
-    
 
-    cv2.imshow("FRAME",frame)
-    if cv2.waitKey(1)&0xFF==27:
+    if int(Distance) <= 90 and int(Distance) >= 50:
+        # check if the window is closed
+        if not window_open:
+            # create a window to display the frame
+            cv2.namedWindow("FRAME", cv2.WINDOW_NORMAL)
+            window_open = True
+
+        # display the distance in the frame
+        # cv2.putText(frame, f"In Range: {int(Distance)} CM", (5, 25),cv2.FONT_HERSHEY_PLAIN, 2, (255,0,0), 2)
+        # show the frame
+        cv2.imshow("FRAME",frame)
+
+    else:
+        # check if the window is open
+        if window_open:
+            # close the window
+            cv2.destroyWindow("FRAME")
+            window_open = False
+
+        # display the distance in the console
+       # print(f"Out of Range: {int(Distance)} CM")
+
+    key = cv2.waitKey(1) & 0xFF # wait for key event (1 millisecond delay)
+    if key == ord('s'): # if the 's' key is pressed
+            cv2.imwrite(f'frame_{counter}.png', frame) # save current frame as 'frame.png' image file
+            counter+=1
+    elif key == 27: # if the 'Esc' key is pressed
         break
+
 cap.release()
 cv2.destroyAllWindows()
